@@ -41,5 +41,7 @@ jobs:
       - name: Run K6 tests
         env:
           K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
+          BASE_URL: https://pruebas-de-carga-k6.onrender.com
         run: |
-          k6 cloud tests/script.js
+          # Ejecutar pruebas en k6 Cloud apuntando al despliegue en Render
+          k6 cloud tests/test.js
