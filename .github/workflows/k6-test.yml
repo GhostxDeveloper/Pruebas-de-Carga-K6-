@@ -43,5 +43,12 @@ jobs:
           K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
           BASE_URL: https://pruebas-de-carga-k6.onrender.com
         run: |
-          # Ejecutar pruebas en k6 Cloud apuntando al despliegue en Render
-          k6 cloud tests/test.js
+          # Verificar que el endpoint sea alcanzable antes de ejecutar k6
+          echo "Comprobando disponibilidad de $BASE_URL"
+          curl -I --max-time 15 --retry 2 --retry-delay 2 "$BASE_URL" || {
+            echo "ERROR: $BASE_URL no es alcanzable";
+            exit 1;
+          }
+
+          # Ejecutar pruebas en k6 Cloud y pasar BASE_URL explícitamente
+          k6 cloud -e BASE_URL="$BASE_URL" tests/test.js
