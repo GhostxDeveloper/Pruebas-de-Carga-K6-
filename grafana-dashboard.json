@@ -1,0 +1,97 @@
+{
+  "dashboard": {
+    "title": "K6 Load Testing - PWA App Shell",
+    "tags": ["k6", "load-testing", "performance"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Usuarios Virtuales Activos",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "vus",
+            "legendFormat": "Usuarios Activos"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Tasa de Peticiones (RPS)",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "http_reqs",
+            "legendFormat": "Peticiones por segundo"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Duración de Peticiones HTTP",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "http_req_duration",
+            "legendFormat": "p95 - {{percentile}}"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Tasa de Errores",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "http_req_failed",
+            "legendFormat": "Peticiones Fallidas"
+          },
+          {
+            "expr": "errors",
+            "legendFormat": "Errores Personalizados"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Tiempos de Respuesta (Percentiles)",
+        "type": "stat",
+        "gridPos": {"x": 0, "y": 16, "w": 8, "h": 4},
+        "targets": [
+          {
+            "expr": "http_req_duration{percentile='95'}",
+            "legendFormat": "p95"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Total de Peticiones",
+        "type": "stat",
+        "gridPos": {"x": 8, "y": 16, "w": 8, "h": 4},
+        "targets": [
+          {
+            "expr": "http_reqs",
+            "legendFormat": "Total"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Tasa de Éxito",
+        "type": "gauge",
+        "gridPos": {"x": 16, "y": 16, "w": 8, "h": 4},
+        "targets": [
+          {
+            "expr": "1 - http_req_failed",
+            "legendFormat": "Success Rate"
+          }
+        ]
+      }
+    ]
+  }
+}
