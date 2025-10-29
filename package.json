@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "k6:run": "k6 run tests/test.js",
+    "k6:cloud": "k6 cloud tests/test.js"
   },
   "dependencies": {
     "react": "^19.1.1",

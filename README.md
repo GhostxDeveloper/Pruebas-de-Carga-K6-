@@ -56,3 +56,52 @@ La aplicación seguirá funcionando porque el Service Worker cachea los recursos
 - Vite 6
 - vite-plugin-pwa
 - Workbox
+
+## Pruebas de carga con k6
+
+El repositorio incluye un script de k6 en `tests/test.js`. Puedes ejecutar las pruebas contra tu proyecto desplegado en Render: `https://pruebas-de-carga-k6.onrender.com`.
+
+### Requisitos
+- Tener instalado k6 (CLI) localmente, o usar Docker.
+- Opcional para la nube: un `K6_CLOUD_TOKEN` de Grafana Cloud k6.
+
+### Ejecutar localmente (PowerShell en Windows)
+
+```pwsh
+# Apuntar las pruebas al despliegue en Render
+$env:BASE_URL = "https://pruebas-de-carga-k6.onrender.com"
+
+# Ejecutar k6 localmente
+k6 run .\tests\test.js
+
+# Alternativamente, con npm script
+npm run k6:run
+```
+
+> Nota: Los scripts de npm no establecen `BASE_URL` automáticamente. Asegúrate de definir la variable de entorno antes de ejecutar el script o el comando.
+
+### Ejecutar en k6 Cloud
+
+```pwsh
+$env:K6_CLOUD_TOKEN = "<tu_token_k6_cloud>"
+$env:BASE_URL = "https://pruebas-de-carga-k6.onrender.com"
+k6 cloud .\tests\test.js
+
+# Alternativamente, con npm script (requiere las variables arriba configuradas)
+npm run k6:cloud
+```
+
+### Ejecutar con Docker
+
+```pwsh
+docker run --rm -i `
+	-e BASE_URL="https://pruebas-de-carga-k6.onrender.com" `
+	-e K6_CLOUD_TOKEN=$env:K6_CLOUD_TOKEN `
+	-v ${PWD}:/work -w /work grafana/k6:latest `
+	run tests/test.js
+```
+
+### Solución de problemas
+- Error "The moduleSpecifier \"tests/script.js\" couldn't be found": asegúrate de usar `tests/test.js` (es el nombre correcto del archivo en este repo).
+- Si usas Docker, verifica que el volumen esté montado y que la ruta interna coincida (`/work/tests/test.js`).
+- Si las peticiones fallan en k6 Cloud, confirma que `BASE_URL` apunte a un dominio accesible públicamente (por ejemplo, tu despliegue en Render) y no a `localhost`.
